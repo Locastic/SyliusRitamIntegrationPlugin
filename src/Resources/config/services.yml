@@ -1,0 +1,22 @@
+services:
+    # Service
+    locatic_sylius_ritam_integration_plugin.ritam_api_handler:
+        public: true
+        class: Locastic\SyliusRitamIntegrationPlugin\Service\RitamApiHandler
+        arguments:
+            - '%ritam_api_host%'
+            - '%ritam_api_version%'
+            - '%ritam_api_username%'
+            - '%ritam_api_secret%'
+    locatic_sylius_ritam_integration_plugin.product_import_handler:
+        public: true
+        class: Locastic\SyliusRitamIntegrationPlugin\Service\ProductImportHandler
+
+    # Command
+    locatic_sylius_ritam_integration_plugin.command.import_products:
+        class: Locastic\SyliusRitamIntegrationPlugin\Command\ImportProductsCommand
+        arguments:
+            - "@locatic_sylius_ritam_integration_plugin.ritam_api_handler"
+            - "@locatic_sylius_ritam_integration_plugin.product_import_handler"
+        tags:
+            - { name: 'console.command' }
