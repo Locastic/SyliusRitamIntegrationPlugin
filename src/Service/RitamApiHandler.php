@@ -35,33 +35,23 @@ class RitamApiHandler
 
     public function getRitamProducts()
     {
-        $url = $this->generateApiUrl('/products/list', 'GET');
-
-        $data  = $this->executeCurlRequest($url);
-
-        return $this->parseResult($data)->List;
+        return $this->executeCurlRequest('/products/list', 'GET');
     }
 
     public function getRitamProductStock()
     {
-        $url = $this->generateApiUrl('/products/instock', 'GET');
-
-        $data  = $this->executeCurlRequest($url);
-
-        return $this->parseResult($data)->List;
+        return $this->executeCurlRequest('/products/instock', 'GET');
     }
 
     public function getRitamProductPrices()
     {
-        $url = $this->generateApiUrl('/products/refreshprices', 'GET');
-
-        $data  = $this->executeCurlRequest($url);
-
-        return $this->parseResult($data)->List;
+        return $this->executeCurlRequest('/products/refreshprices', 'GET');
     }
 
-    private function executeCurlRequest(string $url)
+    private function executeCurlRequest(string $resource, string $httpVerb)
     {
+        $url = $this->generateApiUrl($resource, $httpVerb);
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -74,7 +64,7 @@ class RitamApiHandler
             return curl_error($curl);
         }
 
-        return $data;
+        return $this->parseResult($data)->List;
     }
 
     private function parseResult($response)
@@ -84,7 +74,7 @@ class RitamApiHandler
         return $data;
     }
 
-    private function generateApiUrl($resource, $httpVerb)
+    private function generateApiUrl(string $resource, string $httpVerb)
     {
         $dateTime = new \DateTime();
 
@@ -93,7 +83,7 @@ class RitamApiHandler
             ).'&signature='.$this->generateSignature($httpVerb, $dateTime, $resource);
     }
 
-    private function generateSignature($httpVerb, \DateTime $dateTime, $resource)
+    private function generateSignature(string $httpVerb, \DateTime $dateTime, string $resource)
     {
         $strToSign = $httpVerb."\r\n".$this->apiVersion.$resource."\r\n".$dateTime->format('d.m.Y H:i:s');
 

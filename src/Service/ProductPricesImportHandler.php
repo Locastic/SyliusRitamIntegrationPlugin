@@ -48,10 +48,15 @@ class ProductPricesImportHandler
 
             $productVariant = $product->getVariants()->first();
 
+            if ($productVariant->getChannelPricings()->count() != 0) {
+                $channelPricing = $productVariant->getChannelPricings()->first();
+            } else {
+                $channelPricing = $this->channelPricingFactory->createNew();
+            }
+
             /**
              * @var ChannelPricingInterface $channelPricing
              */
-            $channelPricing = $this->channelPricingFactory->createNew();
             $channelPricing->setOriginalPrice($this->formatPrice($ritamProductPrice->item_mpc));
             $channelPricing->setPrice($this->formatPrice($ritamProductPrice->item_vpc));
             $channelPricing->setChannelCode('US_WEB');
