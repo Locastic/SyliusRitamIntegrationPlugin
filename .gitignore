@@ -7,7 +7,7 @@
 /etc/build/*
 !/etc/build/.gitkeep
 
-tests/Application/app/Resources/config/parameters.yml
+tests/Application/app/config/parameters.yml
 
 tests/Application/node_modules/
 

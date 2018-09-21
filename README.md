@@ -1,8 +1,3 @@
-<p align="center">
-    <a href="https://sylius.com" target="_blank">
-        <img src="https://demo.sylius.com/assets/shop/img/logo.png" />
-    </a>
-</p>
 
 <h1 align="center">Ritam integration Sylius plugin</h1>
 
@@ -35,6 +30,15 @@ Require SyliusRitamIntegrationPlugin in AppKernel.php
      new \Locastic\SyliusRitamIntegrationPlugin\LocasticSyliusRitamIntegrationPlugin(),
 
 Update your database schema.
+
+
+
+<p align="center">
+    <a href="https://sylius.com" target="_blank">
+        <img src="https://demo.sylius.com/assets/shop/img/logo.png" />
+    </a>
+</p>
+
 
 <h1 align="center">Plugin Skeleton</h1>
 
