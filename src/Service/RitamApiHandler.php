@@ -51,6 +51,15 @@ class RitamApiHandler
         return $this->parseResult($data)->List;
     }
 
+    public function getRitamProductPrices()
+    {
+        $url = $this->generateApiUrl('/products/refreshprices', 'GET');
+
+        $data  = $this->executeCurlRequest($url);
+
+        return $this->parseResult($data)->List;
+    }
+
     private function executeCurlRequest(string $url)
     {
         $curl = curl_init();

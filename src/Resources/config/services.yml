@@ -22,6 +22,13 @@ services:
         arguments:
             - "@sylius.repository.product"
 
+    locatic_sylius_ritam_integration_plugin.product_prices_import_handler:
+        public: true
+        class: Locastic\SyliusRitamIntegrationPlugin\Service\ProductPricesImportHandler
+        arguments:
+            - "@sylius.repository.product"
+            - "@sylius.factory.channel_pricing"
+
     # Command
     locatic_sylius_ritam_integration_plugin.command.import_products:
         class: Locastic\SyliusRitamIntegrationPlugin\Command\ImportProductsCommand
@@ -36,6 +43,14 @@ services:
         arguments:
             - "@locatic_sylius_ritam_integration_plugin.ritam_api_handler"
             - "@locatic_sylius_ritam_integration_plugin.product_stock_import_handler"
+        tags:
+            - { name: 'console.command' }
+
+    locatic_sylius_ritam_integration_plugin.command.import_prices:
+        class: Locastic\SyliusRitamIntegrationPlugin\Command\ImportProductPricesCommand
+        arguments:
+            - "@locatic_sylius_ritam_integration_plugin.ritam_api_handler"
+            - "@locatic_sylius_ritam_integration_plugin.product_prices_import_handler"
         tags:
             - { name: 'console.command' }
 
