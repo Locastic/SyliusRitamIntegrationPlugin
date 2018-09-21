@@ -37,20 +37,35 @@ class RitamApiHandler
     {
         $url = $this->generateApiUrl('/products/list', 'GET');
 
+        $data  = $this->executeCurlRequest($url);
+
+        return $this->parseResult($data)->List;
+    }
+
+    public function getRitamProductStock()
+    {
+        $url = $this->generateApiUrl('/products/instock', 'GET');
+
+        $data  = $this->executeCurlRequest($url);
+
+        return $this->parseResult($data)->List;
+    }
+
+    private function executeCurlRequest(string $url)
+    {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
 
         $data = curl_exec($curl);
+        curl_close($curl);
 
         if ($data === false) {
             return curl_error($curl);
         }
 
-        curl_close($curl);
-
-        return $this->parseResult($data)->List;
+        return $data;
     }
 
     private function parseResult($response)

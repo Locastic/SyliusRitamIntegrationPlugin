@@ -14,4 +14,5 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface
 
     public function disableSqlLogger(): void;
 
+    public function findOneByRitamId(int $ritamId);
 }

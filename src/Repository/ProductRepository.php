@@ -8,7 +8,6 @@ use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductReposi
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface
 {
-
     public function persist(Product $product): void
     {
         $this->_em->persist($product);
@@ -23,5 +22,14 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     public function disableSqlLogger(): void
     {
         $this->_em->getConnection()->getConfiguration()->setSQLLogger(null);
+    }
+
+    public function findOneByRitamId(int $ritamId)
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.ritamId = :ritamId')
+            ->setParameter('ritamId', $ritamId)
+            ->getQuery()
+            ->getSingleResult();
     }
 }

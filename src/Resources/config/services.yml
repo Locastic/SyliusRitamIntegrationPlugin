@@ -8,11 +8,18 @@ services:
             - '%ritam_api_version%'
             - '%ritam_api_username%'
             - '%ritam_api_secret%'
+
     locatic_sylius_ritam_integration_plugin.product_import_handler:
         public: true
         class: Locastic\SyliusRitamIntegrationPlugin\Service\ProductImportHandler
         arguments:
             - "@locatic_sylius_ritam_integration_plugin.factory.product"
+            - "@sylius.repository.product"
+
+    locatic_sylius_ritam_integration_plugin.product_stock_import_handler:
+        public: true
+        class: Locastic\SyliusRitamIntegrationPlugin\Service\ProductStockImportHandler
+        arguments:
             - "@sylius.repository.product"
 
     # Command
@@ -21,6 +28,14 @@ services:
         arguments:
             - "@locatic_sylius_ritam_integration_plugin.ritam_api_handler"
             - "@locatic_sylius_ritam_integration_plugin.product_import_handler"
+        tags:
+            - { name: 'console.command' }
+
+    locatic_sylius_ritam_integration_plugin.command.import_stock:
+        class: Locastic\SyliusRitamIntegrationPlugin\Command\ImportProductStockCommand
+        arguments:
+            - "@locatic_sylius_ritam_integration_plugin.ritam_api_handler"
+            - "@locatic_sylius_ritam_integration_plugin.product_stock_import_handler"
         tags:
             - { name: 'console.command' }
 
@@ -39,3 +54,17 @@ services:
         class: Locastic\SyliusRitamIntegrationPlugin\EventSubscriber\SluggableEventSubscriber
         arguments: ["@sylius.generator.slug"]
         tags: [{ name: doctrine.event_subscriber, connection: default }]
+
+    # Listener
+    locatic_sylius_ritam_integration_plugin.listener.taxon:
+        class: Locastic\SyliusRitamIntegrationPlugin\EventListener\TaxonEventListener
+        arguments:
+            - "@sylius.repository.taxon"
+            - "@sylius.factory.product_taxon"
+        tags: [{ name: doctrine.event_listener, event: prePersist, connection: default }]
+
+    locatic_sylius_ritam_integration_plugin.listener.channel:
+        class: Locastic\SyliusRitamIntegrationPlugin\EventListener\ChannelEventListener
+        arguments:
+            - "@sylius.repository.channel"
+        tags: [{ name: doctrine.event_listener, event: prePersist, connection: default }]

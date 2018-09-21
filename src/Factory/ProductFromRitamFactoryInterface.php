@@ -9,4 +9,6 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 interface ProductFromRitamFactoryInterface extends FactoryInterface
 {
     public function create($ritamProduct): ProductInterface;
+
+    public function createWithVariant(): ProductInterface;
 }
