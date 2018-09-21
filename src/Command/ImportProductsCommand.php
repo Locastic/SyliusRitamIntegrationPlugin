@@ -20,6 +20,16 @@ class ImportProductsCommand extends Command
      */
     private $productImportHandler;
 
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    /**
+     * ImportProductsCommand constructor.
+     * @param RitamApiHandler $ritamConnectionHandler
+     * @param ProductImportHandler $productImportHandler
+     */
     public function __construct(RitamApiHandler $ritamConnectionHandler, ProductImportHandler $productImportHandler)
     {
         $this->ritamConnectionHandler = $ritamConnectionHandler;
@@ -28,6 +38,9 @@ class ImportProductsCommand extends Command
         parent::__construct();
     }
 
+    /**
+     *
+     */
     protected function configure()
     {
         $this
@@ -35,47 +48,43 @@ class ImportProductsCommand extends Command
             ->setDescription('Imports available data into sylius product entity.');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         ini_set('memory_limit', '-1');
         set_time_limit(0);
 
+        $this->output = $output;
         try {
             $timeStart = time();
 
-            $output->writeln(
-                [
-                    "-------------------------------------------",
-                    "\nPlease wait while data is being imported...\n",
-                    "-------------------------------------------",
-                ]
-            );
+            $this->writeInfo(["Please wait while data is being imported..."]);
 
             $ritamProducts = $this->ritamConnectionHandler->getRitamProducts();
 
+            $this->writeInfo(["Fetched all product from Ritam"]);
 
             if (is_string($ritamProducts)) {
-                $output->writeln(
-                    [
-                        '<error>An error occured: '.$ritamProducts.'</error>',
-                    ]
-                );
+                $this->writeError($ritamProducts);
 
                 return 1;
             }
 
+            $this->writeInfo(["Saving products into database..."]);
 
             $importedProductsCount = $this->productImportHandler->importProducts($ritamProducts);
 
             $timeEnd = time();
             $time = round(($timeEnd - $timeStart) / 60, 2);
 
-            $output->writeln(
+            $this->writeInfo(
                 [
-                    "-------------------------------------------",
-                    "\nImported ".$importedProductsCount." products!\n",
-                    "Execution time: ".$time." minutes\n",
-                    "-------------------------------------------",
+                    "Imported ".$importedProductsCount." products!",
+                    "Execution time: ".$time." minutes",
                 ]
             );
 
@@ -83,14 +92,32 @@ class ImportProductsCommand extends Command
 
         } catch (\Exception $e) {
 
-            $output->writeln(
-                [
-                    "\nAn error occured: \n",
-                    '<error>'.$e->getMessage().'</error>',
-                ]
-            );
+            $this->writeError($e->getMessage());
 
             return 1;
+        }
+    }
+
+    /**
+     * @param string $errorMessage
+     */
+    private function writeError(string $errorMessage)
+    {
+        $this->output->writeln(
+            [
+                "\nAn error occured: \n",
+                '<error>'.$errorMessage.'</error>',
+            ]
+        );
+    }
+
+    /**
+     * @param array $messages
+     */
+    private function writeInfo(array $messages)
+    {
+        foreach ($messages as $message) {
+            $this->output->writeln(["\n".$message."\n",]);
         }
     }
 }

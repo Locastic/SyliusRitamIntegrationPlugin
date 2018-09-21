@@ -1,0 +1,11 @@
+sylius_product:
+    resources:
+        product:
+            classes:
+                model: Locastic\SyliusRitamIntegrationPlugin\Entity\Product
+        product_variant:
+            classes:
+                model: Locastic\SyliusRitamIntegrationPlugin\Entity\ProductVariant
+            translation:
+                classes:
+                    model: Locastic\SyliusRitamIntegrationPlugin\Entity\ProductVariantTranslation

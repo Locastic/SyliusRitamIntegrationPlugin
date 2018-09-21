@@ -11,6 +11,9 @@ services:
     locatic_sylius_ritam_integration_plugin.product_import_handler:
         public: true
         class: Locastic\SyliusRitamIntegrationPlugin\Service\ProductImportHandler
+        arguments:
+            - "@locatic_sylius_ritam_integration_plugin.factory.product"
+            - "@sylius.repository.product"
 
     # Command
     locatic_sylius_ritam_integration_plugin.command.import_products:
@@ -20,3 +23,19 @@ services:
             - "@locatic_sylius_ritam_integration_plugin.product_import_handler"
         tags:
             - { name: 'console.command' }
+
+    # Factory
+    locatic_sylius_ritam_integration_plugin.factory.product:
+        class: Locastic\SyliusRitamIntegrationPlugin\Factory\AddProductFromRitamFactory
+        decorates: sylius.factory.product
+        arguments:
+            - '@locatic_sylius_ritam_integration_plugin.factory.product.inner'
+            - '%default_import_locale%'
+        public: false
+
+
+    # Subscriber
+    locatic_sylius_ritam_integration_plugin.subscriber.sluggable:
+        class: Locastic\SyliusRitamIntegrationPlugin\EventSubscriber\SluggableEventSubscriber
+        arguments: ["@sylius.generator.slug"]
+        tags: [{ name: doctrine.event_subscriber, connection: default }]

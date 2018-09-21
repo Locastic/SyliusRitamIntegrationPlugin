@@ -4,6 +4,38 @@
     </a>
 </p>
 
+<h1 align="center">Ritam integration Sylius plugin</h1>
+
+## Setup
+
+Add the following line to your config.yml:
+
+    
+    - { resource: "@LocasticSyliusRitamIntegrationPlugin/Resources/config/config.yml" }
+    
+Add parameters to parameters.yml or .env:
+    
+    parameters:
+        ritam_api_host: "%env(RITAM_API_HOST)%"
+        ritam_api_version: "%env(RITAM_API_VERSION)%"
+        ritam_api_secret: "%env(RITAM_API_SECRET)%"
+        ritam_api_username: "%env(RITAM_API_USERNAME)%"
+        default_import_locale: "%env(DEFAULT_IMPORT_LOCALE)%"
+    
+        
+        env(RITAM_API_HOST): 'http://webservice.ritam.hr:8920'
+        env(RITAM_API_VERSION): '/rest/api/v1'
+        env(RITAM_API_SECRET): '~'
+        env(RITAM_API_USERNAME): '~'
+        env(DEFAULT_IMPORT_LOCALE): 'hr_HR'
+
+    
+Require SyliusRitamIntegrationPlugin in AppKernel.php
+    
+     new \Locastic\SyliusRitamIntegrationPlugin\LocasticSyliusRitamIntegrationPlugin(),
+
+Update your database schema.
+
 <h1 align="center">Plugin Skeleton</h1>
 
 <p align="center">Skeleton for starting Sylius plugins.</p>

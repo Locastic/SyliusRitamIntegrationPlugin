@@ -51,7 +51,6 @@ class RitamApiHandler
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_VERBOSE, true);
 
         $data = curl_exec($curl);
 
@@ -61,7 +60,6 @@ class RitamApiHandler
 
         curl_close($curl);
 
-        dump($this->parseResult($data)->List);
         return $this->parseResult($data)->List;
     }
 
