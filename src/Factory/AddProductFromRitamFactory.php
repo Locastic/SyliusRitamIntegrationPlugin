@@ -3,13 +3,11 @@ declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Factory;
 
-use Locastic\SyliusRitamIntegrationPlugin\Entity\Product;
-use Locastic\SyliusRitamIntegrationPlugin\Entity\ProductInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Locastic\SyliusRitamIntegrationPlugin\Entity\ProductInterface;
 
 class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
 {
-
     /** @var FactoryInterface */
     private $createProductFromRitamFactory;
 
@@ -24,20 +22,15 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
         $this->locale = $locale;
     }
 
+    public function createNew()
+    {
+        return $this->createProductFromRitamFactory->createNew();
+    }
+
     public function create($ritamProduct): ProductInterface
     {
         $product = $this->createProductFromRitamFactory->createNew();
 
-        return $this->populateProductFromRitamProduct($product, $ritamProduct);
-    }
-
-    public function update(Product $product, $ritamProduct): ProductInterface
-    {
-        return $this->populateProductFromRitamProduct($product, $ritamProduct);
-    }
-
-    private function populateProductFromRitamProduct(Product $product, $ritamProduct)
-    {
         $product->setCurrentLocale($this->locale);
         $product->setRitamId(intval($ritamProduct->item_id));
         $product->setUnitOfMeasure($ritamProduct->item_unit);

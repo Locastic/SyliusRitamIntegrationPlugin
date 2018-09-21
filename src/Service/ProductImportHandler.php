@@ -50,8 +50,6 @@ class ProductImportHandler
             // bulk insert - flush after every $batchSize persists
             if (($importedProductCount % $batchSize) === 0) {
                 $this->productRepository->savePersisted();
-                dump("persisted");
-                dump("count: ".$importedProductCount);
             }
 
             $importedProductCount++;
@@ -62,5 +60,4 @@ class ProductImportHandler
 
         return $importedProductCount;
     }
-
 }
