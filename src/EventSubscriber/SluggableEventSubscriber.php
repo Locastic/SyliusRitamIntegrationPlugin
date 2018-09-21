@@ -14,18 +14,11 @@ class SluggableEventSubscriber implements EventSubscriber
      */
     private $slugGenerator;
 
-    /**
-     * SluggableEventSubscriber constructor.
-     * @param SlugGenerator $slugGenerator
-     */
     public function __construct(SlugGenerator $slugGenerator)
     {
         $this->slugGenerator = $slugGenerator;
     }
 
-    /**
-     * @return array
-     */
     public function getSubscribedEvents()
     {
         return array(
@@ -34,9 +27,6 @@ class SluggableEventSubscriber implements EventSubscriber
 
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();

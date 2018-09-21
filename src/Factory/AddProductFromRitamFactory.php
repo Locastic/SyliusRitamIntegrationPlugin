@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Factory;
 
@@ -17,21 +18,12 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
      */
     private $locale;
 
-    /**
-     * AddProductFromRitamFactory constructor.
-     * @param FactoryInterface $createProductFromRitamFactory
-     * @param string $locale
-     */
     public function __construct(FactoryInterface $createProductFromRitamFactory, string $locale = 'hr_HR')
     {
         $this->createProductFromRitamFactory = $createProductFromRitamFactory;
         $this->locale = $locale;
     }
 
-    /**
-     * @param $ritamProduct
-     * @return ProductInterface
-     */
     public function create($ritamProduct): ProductInterface
     {
         $product = $this->createProductFromRitamFactory->createNew();
@@ -39,20 +31,11 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
         return $this->populateProductFromRitamProduct($product, $ritamProduct);
     }
 
-    /**
-     * @param $ritamProduct
-     * @return ProductInterface
-     */
     public function update(Product $product, $ritamProduct): ProductInterface
     {
         return $this->populateProductFromRitamProduct($product, $ritamProduct);
     }
 
-    /**
-     * @param Product $product
-     * @param $ritamProduct
-     * @return Product
-     */
     private function populateProductFromRitamProduct(Product $product, $ritamProduct)
     {
         $product->setCurrentLocale($this->locale);

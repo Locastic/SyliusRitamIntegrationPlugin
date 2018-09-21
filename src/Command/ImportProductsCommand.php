@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Command;
 
@@ -25,11 +26,6 @@ class ImportProductsCommand extends Command
      */
     private $output;
 
-    /**
-     * ImportProductsCommand constructor.
-     * @param RitamApiHandler $ritamConnectionHandler
-     * @param ProductImportHandler $productImportHandler
-     */
     public function __construct(RitamApiHandler $ritamConnectionHandler, ProductImportHandler $productImportHandler)
     {
         $this->ritamConnectionHandler = $ritamConnectionHandler;
@@ -38,9 +34,6 @@ class ImportProductsCommand extends Command
         parent::__construct();
     }
 
-    /**
-     *
-     */
     protected function configure()
     {
         $this
@@ -48,11 +41,6 @@ class ImportProductsCommand extends Command
             ->setDescription('Imports available data into sylius product entity.');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         ini_set('memory_limit', '-1');
@@ -98,9 +86,6 @@ class ImportProductsCommand extends Command
         }
     }
 
-    /**
-     * @param string $errorMessage
-     */
     private function writeError(string $errorMessage)
     {
         $this->output->writeln(
@@ -111,9 +96,6 @@ class ImportProductsCommand extends Command
         );
     }
 
-    /**
-     * @param array $messages
-     */
     private function writeInfo(array $messages)
     {
         foreach ($messages as $message) {

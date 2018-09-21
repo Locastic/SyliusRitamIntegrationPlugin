@@ -1,7 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Service;
-
 
 class RitamApiHandler
 {
@@ -25,14 +25,7 @@ class RitamApiHandler
      */
     private $password;
 
-    /**
-     * RitamApiHandler constructor.
-     * @param $host
-     * @param $username
-     * @param $password
-     * @param $apiVersion
-     */
-    public function __construct($host,$apiVersion, $username, $password)
+    public function __construct($host, $apiVersion, $username, $password)
     {
         $this->host = $host;
         $this->apiVersion = $apiVersion;
@@ -40,9 +33,6 @@ class RitamApiHandler
         $this->password = $password;
     }
 
-    /**
-     * @return string
-     */
     public function getRitamProducts()
     {
         $url = $this->generateApiUrl('/products/list', 'GET');
@@ -54,7 +44,7 @@ class RitamApiHandler
 
         $data = curl_exec($curl);
 
-        if ($data === FALSE) {
+        if ($data === false) {
             return curl_error($curl);
         }
 
@@ -63,10 +53,6 @@ class RitamApiHandler
         return $this->parseResult($data)->List;
     }
 
-    /**
-     * @param $response
-     * @return mixed
-     */
     private function parseResult($response)
     {
         $data = json_decode($response);
@@ -74,11 +60,6 @@ class RitamApiHandler
         return $data;
     }
 
-    /**
-     * @param string $resource
-     * @param string $httpVerb
-     * @return string
-     */
     private function generateApiUrl($resource, $httpVerb)
     {
         $dateTime = new \DateTime();
@@ -88,12 +69,6 @@ class RitamApiHandler
             ).'&signature='.$this->generateSignature($httpVerb, $dateTime, $resource);
     }
 
-    /**
-     * @param string $httpVerb
-     * @param \DateTime $dateTime
-     * @param string $resource
-     * @return string
-     */
     private function generateSignature($httpVerb, \DateTime $dateTime, $resource)
     {
         $strToSign = $httpVerb."\r\n".$this->apiVersion.$resource."\r\n".$dateTime->format('d.m.Y H:i:s');

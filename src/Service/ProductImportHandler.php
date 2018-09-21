@@ -1,14 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Service;
 
 use Locastic\SyliusRitamIntegrationPlugin\Factory\ProductFromRitamFactoryInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 
-/**
- * Class ProductImportHandler
- * @package Locastic\SyliusRitamIntegrationPlugin\Service
- */
 class ProductImportHandler
 {
     /**
@@ -21,11 +18,6 @@ class ProductImportHandler
      */
     private $productRepository;
 
-    /**
-     * ProductImportHandler constructor.
-     * @param ProductFromRitamFactoryInterface $productFactory
-     * @param ProductRepositoryInterface $productRepository
-     */
     public function __construct(
         ProductFromRitamFactoryInterface $productFactory,
         ProductRepositoryInterface $productRepository
@@ -34,10 +26,6 @@ class ProductImportHandler
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * @param $ritamProducts
-     * @return int
-     */
     public function importProducts($ritamProducts)
     {
         $importedProductCount = 0;
