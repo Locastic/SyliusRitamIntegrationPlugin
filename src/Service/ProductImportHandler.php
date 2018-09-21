@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Locastic\SyliusRitamIntegrationPlugin\Service;
 
 use Locastic\SyliusRitamIntegrationPlugin\Factory\ProductFromRitamFactoryInterface;
-use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Locastic\SyliusRitamIntegrationPlugin\Repository\ProductRepositoryInterface;
 
 class ProductImportHandler
 {
@@ -29,6 +29,9 @@ class ProductImportHandler
     public function importProducts($ritamProducts)
     {
         $importedProductCount = 0;
+        $batchSize = 100;
+
+        $this->productRepository->disableSqlLogger();
         foreach ($ritamProducts as $ritamProduct) {
 
             if (!isset($ritamProduct->item_code)) {
@@ -37,16 +40,27 @@ class ProductImportHandler
 
             $product = $this->productRepository->findOneByCode($ritamProduct->item_code);
 
-            if (is_null($product)) {
-                $product = $this->productFactory->create($ritamProduct);
-            } else {
-                $product = $this->productFactory->update($product, $ritamProduct);
+            if (!is_null($product)) {
+                continue;
             }
 
-            $this->productRepository->add($product);
+            $product = $this->productFactory->create($ritamProduct);
+            $this->productRepository->persist($product);
+
+            // bulk insert - flush after every $batchSize persists
+            if (($importedProductCount % $batchSize) === 0) {
+                $this->productRepository->savePersisted();
+                dump("persisted");
+                dump("count: ".$importedProductCount);
+            }
+
             $importedProductCount++;
         }
 
+        // save remaining
+        $this->productRepository->savePersisted();
+
         return $importedProductCount;
     }
+
 }

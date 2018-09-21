@@ -39,7 +39,7 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
     private function populateProductFromRitamProduct(Product $product, $ritamProduct)
     {
         $product->setCurrentLocale($this->locale);
-        $product->setRitamId($ritamProduct->item_id);
+        $product->setRitamId(intval($ritamProduct->item_id));
         $product->setUnitOfMeasure($ritamProduct->item_unit);
         $product->setName($ritamProduct->item_name);
         $product->setCode($ritamProduct->item_code);

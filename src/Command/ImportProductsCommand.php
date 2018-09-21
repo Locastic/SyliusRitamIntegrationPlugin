@@ -37,7 +37,7 @@ class ImportProductsCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('locastic:import-products')
+            ->setName('locastic:sylius:import-ritam-products')
             ->setDescription('Imports available data into sylius product entity.');
     }
 
@@ -54,7 +54,7 @@ class ImportProductsCommand extends Command
 
             $ritamProducts = $this->ritamConnectionHandler->getRitamProducts();
 
-            $this->writeInfo(["Fetched all product from Ritam"]);
+            $this->writeInfo(["Fetched all products from Ritam."]);
 
             if (is_string($ritamProducts)) {
                 $this->writeError($ritamProducts);
@@ -62,7 +62,7 @@ class ImportProductsCommand extends Command
                 return 1;
             }
 
-            $this->writeInfo(["Saving products into database..."]);
+            $this->writeInfo(["Saving products to database..."]);
 
             $importedProductsCount = $this->productImportHandler->importProducts($ritamProducts);
 

@@ -3,6 +3,7 @@ sylius_product:
         product:
             classes:
                 model: Locastic\SyliusRitamIntegrationPlugin\Entity\Product
+                repository: Locastic\SyliusRitamIntegrationPlugin\Repository\ProductRepository
         product_variant:
             classes:
                 model: Locastic\SyliusRitamIntegrationPlugin\Entity\ProductVariant
