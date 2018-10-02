@@ -3,9 +3,8 @@
 namespace Locastic\SyliusRitamIntegrationPlugin\Service;
 
 use Locastic\SyliusRitamIntegrationPlugin\Entity\ProductInterface;
+use Locastic\SyliusRitamIntegrationPlugin\Factory\ChannelPricingFromRitamFactoryInterface;
 use Locastic\SyliusRitamIntegrationPlugin\Repository\ProductRepositoryInterface;
-use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 
 class ProductPricesImportHandler
 {
@@ -15,20 +14,27 @@ class ProductPricesImportHandler
     private $productRepository;
 
     /**
-     * @var FactoryInterface
+     * @var ChannelPricingFromRitamFactoryInterface
      */
     private $channelPricingFactory;
 
+    /**
+     * @var string
+     */
+    private $channelCode;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        FactoryInterface $channelPricingRepository
+        ChannelPricingFromRitamFactoryInterface $channelPricingRepository,
+        string $channelCode = 'US_WEB'
     ) {
         $this->productRepository = $productRepository;
         $this->channelPricingFactory = $channelPricingRepository;
+        $this->channelCode = $channelCode;
     }
 
 
-    public function importProductStock($ritamProductPrices)
+    public function importProductPrices($ritamProductPrices)
     {
         $importedProductStockCount = 0;
         $batchSize = 100;
@@ -51,15 +57,8 @@ class ProductPricesImportHandler
             if ($productVariant->getChannelPricings()->count() != 0) {
                 $channelPricing = $productVariant->getChannelPricings()->first();
             } else {
-                $channelPricing = $this->channelPricingFactory->createNew();
+                $channelPricing = $this->channelPricingFactory->createFromRitam($ritamProductPrice);
             }
-
-            /**
-             * @var ChannelPricingInterface $channelPricing
-             */
-            $channelPricing->setOriginalPrice($this->formatPrice($ritamProductPrice->item_mpc));
-            $channelPricing->setPrice($this->formatPrice($ritamProductPrice->item_vpc));
-            $channelPricing->setChannelCode('US_WEB');
 
             $productVariant->addChannelPricing($channelPricing);
 
@@ -79,8 +78,4 @@ class ProductPricesImportHandler
         return $importedProductStockCount;
     }
 
-    private function formatPrice($price)
-    {
-        return intval(floatval($price) * 100);
-    }
 }

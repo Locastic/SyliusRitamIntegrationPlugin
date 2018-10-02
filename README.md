@@ -16,13 +16,16 @@ Add parameters to parameters.yml or .env:
         ritam_api_secret: "%env(RITAM_API_SECRET)%"
         ritam_api_username: "%env(RITAM_API_USERNAME)%"
         default_import_locale: "%env(DEFAULT_IMPORT_LOCALE)%"
+        default_import_channel: "%env(DEFAULT_IMPORT_CHANNEL)%"
+        default_import_taxon: "%env(DEFAULT_IMPORT_TAXON)%"
     
-        
         env(RITAM_API_HOST): 'http://webservice.ritam.hr:8920'
         env(RITAM_API_VERSION): '/rest/api/v1'
-        env(RITAM_API_SECRET): '~'
-        env(RITAM_API_USERNAME): '~'
-        env(DEFAULT_IMPORT_LOCALE): 'hr_HR'
+        env(RITAM_API_SECRET): '23wqs28'
+        env(RITAM_API_USERNAME): 'km_webshop'
+        env(DEFAULT_IMPORT_LOCALE): 'en_US'
+        env(DEFAULT_IMPORT_CHANNEL): 'US_WEB'
+        env(DEFAULT_IMPORT_TAXON): 'category'
 
     
 Require SyliusRitamIntegrationPlugin in AppKernel.php

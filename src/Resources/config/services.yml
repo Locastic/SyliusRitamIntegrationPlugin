@@ -15,6 +15,8 @@ services:
         arguments:
             - "@locatic_sylius_ritam_integration_plugin.factory.product"
             - "@sylius.repository.product"
+            - "@sylius.factory.channel_pricing"
+            - "%default_import_channel%"
 
     locatic_sylius_ritam_integration_plugin.product_stock_import_handler:
         public: true
@@ -63,6 +65,13 @@ services:
             - '%default_import_locale%'
         public: false
 
+    locatic_sylius_ritam_integration_plugin.factory.channel_pricing:
+        class: Locastic\SyliusRitamIntegrationPlugin\Factory\AddChannelPricingFromRitamFactory
+        decorates: sylius.factory.channel_pricing
+        arguments:
+            - '@locatic_sylius_ritam_integration_plugin.factory.channel_pricing.inner'
+            - '%default_import_channel%'
+        public: false
 
     # Subscriber
     locatic_sylius_ritam_integration_plugin.subscriber.sluggable:
@@ -76,10 +85,12 @@ services:
         arguments:
             - "@sylius.repository.taxon"
             - "@sylius.factory.product_taxon"
+            - "%default_import_taxon%"
         tags: [{ name: doctrine.event_listener, event: prePersist, connection: default }]
 
     locatic_sylius_ritam_integration_plugin.listener.channel:
         class: Locastic\SyliusRitamIntegrationPlugin\EventListener\ChannelEventListener
         arguments:
             - "@sylius.repository.channel"
+            - "%default_import_channel%"
         tags: [{ name: doctrine.event_listener, event: prePersist, connection: default }]

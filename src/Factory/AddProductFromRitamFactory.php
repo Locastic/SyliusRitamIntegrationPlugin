@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Factory;
 
+use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Locastic\SyliusRitamIntegrationPlugin\Entity\ProductInterface;
@@ -17,7 +18,7 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
      */
     private $locale;
 
-    public function __construct(FactoryInterface $createProductFromRitamFactory, string $locale = 'hr_HR')
+    public function __construct(FactoryInterface $createProductFromRitamFactory, string $locale = 'en_US')
     {
         $this->createProductFromRitamFactory = $createProductFromRitamFactory;
         $this->locale = $locale;
@@ -34,7 +35,7 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
         return $this->createProductFromRitamFactory->createWithVariant();
     }
 
-    public function create($ritamProduct): ProductInterface
+    public function createWithChannelPricing($ritamProduct, ChannelPricingInterface $channelPricing): ProductInterface
     {
         /**
          * @var ProductInterface $product
@@ -56,6 +57,8 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
         $productVariant->setCurrentLocale($this->locale);
         $productVariant->setCode($ritamProduct->item_code);
         $productVariant->setName($ritamProduct->item_name);
+
+        $productVariant->addChannelPricing($channelPricing);
 
         return $product;
     }

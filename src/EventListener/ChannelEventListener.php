@@ -16,9 +16,15 @@ class ChannelEventListener
      */
     private $channelRepository;
 
-    public function __construct(ChannelRepositoryInterface $channelRepository)
+    /**
+     * @var string
+     */
+    private $channelCode;
+
+    public function __construct(ChannelRepositoryInterface $channelRepository, string $channelCode = 'US_WEB')
     {
         $this->channelRepository = $channelRepository;
+        $this->channelCode = $channelCode;
     }
 
     public function prePersist(LifecycleEventArgs $args)
@@ -29,7 +35,7 @@ class ChannelEventListener
             return;
         }
 
-        $channel = $this->channelRepository->findOneByCode('US_WEB');
+        $channel = $this->channelRepository->findOneByCode($this->channelCode);
 
         if (!$channel instanceof Channel) {
             return;

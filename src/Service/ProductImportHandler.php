@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Service;
 
+use Locastic\SyliusRitamIntegrationPlugin\Factory\ChannelPricingFromRitamFactoryInterface;
 use Locastic\SyliusRitamIntegrationPlugin\Factory\ProductFromRitamFactoryInterface;
 use Locastic\SyliusRitamIntegrationPlugin\Repository\ProductRepositoryInterface;
 
@@ -18,12 +19,19 @@ class ProductImportHandler
      */
     private $productRepository;
 
+    /**
+     * @var ChannelPricingFromRitamFactoryInterface
+     */
+    private $channelPricingFactory;
+
     public function __construct(
         ProductFromRitamFactoryInterface $productFactory,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ChannelPricingFromRitamFactoryInterface $channelPricingFactory
     ) {
         $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
+        $this->channelPricingFactory = $channelPricingFactory;
     }
 
     public function importProducts($ritamProducts)
@@ -44,7 +52,9 @@ class ProductImportHandler
                 continue;
             }
 
-            $product = $this->productFactory->create($ritamProduct);
+            $channelPricing = $this->channelPricingFactory->createFromRitam($ritamProduct);
+
+            $product = $this->productFactory->createWithChannelPricing($ritamProduct, $channelPricing);
             $this->productRepository->persist($product);
 
             // bulk insert - flush after every $batchSize persists

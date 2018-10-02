@@ -60,7 +60,7 @@ class RitamApiHandler
         $data = curl_exec($curl);
         curl_close($curl);
 
-        if ($data === false) {
+        if (empty($data)) {
             return curl_error($curl);
         }
 
@@ -69,9 +69,7 @@ class RitamApiHandler
 
     private function parseResult($response)
     {
-        $data = json_decode($response);
-
-        return $data;
+        return json_decode($response);
     }
 
     private function generateApiUrl(string $resource, string $httpVerb)

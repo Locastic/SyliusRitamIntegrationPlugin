@@ -63,7 +63,7 @@ class ImportProductPricesCommand extends Command
 
             $this->writeInfo(["Saving product prices to database..."]);
 
-            $importedProductsCount = $this->productPricesImportHandler->importProductStock($ritamProductPrices);
+            $importedProductsCount = $this->productPricesImportHandler->importProductPrices($ritamProductPrices);
 
             $timeEnd = time();
             $time = round(($timeEnd - $timeStart) / 60, 2);

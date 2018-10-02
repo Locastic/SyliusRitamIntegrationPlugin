@@ -21,10 +21,19 @@ class TaxonEventListener
      */
     private $productTaxonFactory;
 
-    public function __construct(TaxonRepositoryInterface $taxonRepository, FactoryInterface $productTaxonFactory)
-    {
+    /**
+     * @var string
+     */
+    private $taxonCode;
+
+    public function __construct(
+        TaxonRepositoryInterface $taxonRepository,
+        FactoryInterface $productTaxonFactory,
+        string $taxonCode = "category"
+    ) {
         $this->taxonRepository = $taxonRepository;
         $this->productTaxonFactory = $productTaxonFactory;
+        $this->taxonCode = $taxonCode;
     }
 
 
@@ -36,7 +45,7 @@ class TaxonEventListener
             return;
         }
 
-        $taxon = $this->taxonRepository->findOneByCode('category');
+        $taxon = $this->taxonRepository->findOneByCode($this->taxonCode);
 
         if (!$taxon instanceof Taxon) {
             return;
