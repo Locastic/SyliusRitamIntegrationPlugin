@@ -1,4 +1,9 @@
 services:
+
+    Locastic\SyliusRitamIntegrationPlugin\Controller\:
+        resource: '../../Controller'
+        public: true
+        tags: ['controller.service_arguments']
     # Service
     locatic_sylius_ritam_integration_plugin.ritam_api_handler:
         public: true

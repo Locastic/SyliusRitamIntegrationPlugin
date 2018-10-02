@@ -7,7 +7,13 @@ Add the following line to your config.yml:
 
     
     - { resource: "@LocasticSyliusRitamIntegrationPlugin/Resources/config/config.yml" }
+ 
+Add the following lines to your routing.yml file:
     
+    locastic_sylius_routing:
+        resource: "@LocasticSyliusRitamIntegrationPlugin/Resources/config/routing.yml"
+        prefix: /admin
+
 Add parameters to parameters.yml or .env:
     
     parameters:

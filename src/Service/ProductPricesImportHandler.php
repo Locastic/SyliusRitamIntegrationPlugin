@@ -33,7 +33,6 @@ class ProductPricesImportHandler
         $this->channelCode = $channelCode;
     }
 
-
     public function importProductPrices($ritamProductPrices)
     {
         $importedProductStockCount = 0;
@@ -77,5 +76,4 @@ class ProductPricesImportHandler
 
         return $importedProductStockCount;
     }
-
 }

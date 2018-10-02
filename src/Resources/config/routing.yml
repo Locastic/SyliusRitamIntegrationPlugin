@@ -1,0 +1,14 @@
+locastic_sylius_import_ritam_products:
+    path: /import-ritam-products
+    defaults:
+        _controller: LocasticSyliusRitamIntegrationPlugin:Import:importRitamProducts
+
+locastic_sylius_import_ritam_prices:
+    path: /import-ritam-prices
+    defaults:
+        _controller: LocasticSyliusRitamIntegrationPlugin:Import:importRitamProductPrices
+
+locastic_sylius_import_ritam_stock:
+    path: /import-ritam-stock
+    defaults:
+        _controller: LocasticSyliusRitamIntegrationPlugin:Import:importRitamProductStock
