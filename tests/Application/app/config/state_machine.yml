@@ -1,0 +1,8 @@
+winzou_state_machine:
+    sylius_order_checkout:
+        callbacks:
+            after:
+                sylius_save_checkout_completion_date:
+                    on: ["complete"]
+                    do: ["@locatic_sylius_ritam_integration_plugin.order_sender", "sendSyliusOrderToRitamApi"]
+                    args: ["object"]

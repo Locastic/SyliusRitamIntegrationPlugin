@@ -38,8 +38,24 @@ Require SyliusRitamIntegrationPlugin in AppKernel.php
     
      new \Locastic\SyliusRitamIntegrationPlugin\LocasticSyliusRitamIntegrationPlugin(),
 
-Update your database schema.
+Add **state_machine.yml** file to app/config folder with this content:
+     
+     
+     winzou_state_machine:
+         sylius_order_checkout:
+             callbacks:
+                 after:
+                     sylius_save_checkout_completion_date:
+                         on: ["complete"]
+                         do: ["@locatic_sylius_ritam_integration_plugin.order_sender", "sendSyliusOrderToRitamApi"]
+                         args: ["object"]
 
+And add this line to your app/config.yml:
+
+
+      - { resource: "state_machine.yml" }
+      
+Update your database schema.
 
 
 <p align="center">

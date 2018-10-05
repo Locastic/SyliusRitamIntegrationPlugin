@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Locastic\SyliusRitamIntegrationPlugin\Service;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class RitamApiHandler
 {
     /**
@@ -35,22 +37,27 @@ class RitamApiHandler
 
     public function getRitamProducts()
     {
-        return $this->executeCurlRequest('/products/list', 'GET');
+        return $this->executeCurlGetRequest('/products/list');
     }
 
     public function getRitamProductStock()
     {
-        return $this->executeCurlRequest('/products/instock', 'GET');
+        return $this->executeCurlGetRequest('/products/instock');
     }
 
     public function getRitamProductPrices()
     {
-        return $this->executeCurlRequest('/products/refreshprices', 'GET');
+        return $this->executeCurlGetRequest('/products/refreshprices');
     }
 
-    private function executeCurlRequest(string $resource, string $httpVerb)
+    public function postOrderToRitam(string $data)
     {
-        $url = $this->generateApiUrl($resource, $httpVerb);
+        return $this->executeCurlPostRequest('/webshop/orders/create', $data);
+    }
+
+    private function executeCurlGetRequest(string $resource)
+    {
+        $url = $this->generateApiUrl($resource, Request::METHOD_GET);
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -65,6 +72,30 @@ class RitamApiHandler
         }
 
         return $this->parseResult($data)->List;
+    }
+
+    private function executeCurlPostRequest(string $resource, string $data)
+    {
+        $url = $this->generateApiUrl($resource, Request::METHOD_POST);
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data))
+        );
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        if (empty($response)) {
+            return curl_error($curl);
+        }
+
+        return $response;
     }
 
     private function parseResult($response)

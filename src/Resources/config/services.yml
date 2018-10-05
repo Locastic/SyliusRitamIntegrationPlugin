@@ -36,6 +36,12 @@ services:
             - "@sylius.repository.product"
             - "@sylius.factory.channel_pricing"
 
+    locatic_sylius_ritam_integration_plugin.order_sender:
+        public: true
+        class: Locastic\SyliusRitamIntegrationPlugin\Service\OrderSender
+        arguments:
+            - "@locatic_sylius_ritam_integration_plugin.ritam_api_handler"
+
     # Command
     locatic_sylius_ritam_integration_plugin.command.import_products:
         class: Locastic\SyliusRitamIntegrationPlugin\Command\ImportProductsCommand

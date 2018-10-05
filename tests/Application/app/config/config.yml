@@ -9,6 +9,7 @@ imports:
     - { resource: "@SyliusAdminApiBundle/Resources/config/app/config.yml" }
     - { resource: "@LocasticSyliusRitamIntegrationPlugin/Resources/config/config.yml" }
     - { resource: "parameters.yml" }
+    - { resource: "state_machine.yml" }
 
     - { resource: "../../../../vendor/sylius/sylius/app/config/security.yml" }
 
