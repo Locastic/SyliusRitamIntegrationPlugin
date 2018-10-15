@@ -53,13 +53,14 @@ class ImportProductPricesCommand extends Command
 
             $ritamProductPrices = $this->ritamConnectionHandler->getRitamProductPrices();
 
-            $this->writeInfo(["Fetched all product prices from Ritam."]);
 
             if (is_string($ritamProductPrices)) {
                 $this->writeError($ritamProductPrices);
 
                 return 1;
             }
+
+            $this->writeInfo(["Fetched all product prices from Ritam."]);
 
             $this->writeInfo(["Saving product prices to database..."]);
 

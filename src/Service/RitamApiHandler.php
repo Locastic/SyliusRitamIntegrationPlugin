@@ -63,13 +63,19 @@ class RitamApiHandler
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_VERBOSE, true);
+
 
         $data = curl_exec($curl);
-        curl_close($curl);
 
         if (empty($data)) {
-            return curl_error($curl);
+            $error = curl_error($curl);
+            curl_close($curl);
+
+            return $error;
         }
+
+        curl_close($curl);
 
         return $this->parseResult($data)->List;
     }
@@ -83,17 +89,25 @@ class RitamApiHandler
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        curl_setopt(
+            $curl,
+            CURLOPT_HTTPHEADER,
+            array(
                 'Content-Type: application/json',
-                'Content-Length: ' . strlen($data))
+                'Content-Length: '.strlen($data),
+            )
         );
 
         $response = curl_exec($curl);
-        curl_close($curl);
 
         if (empty($response)) {
-            return curl_error($curl);
+            $error = curl_error($curl);
+            curl_close($curl);
+
+            return $error;
         }
+
+        curl_close($curl);
 
         return $response;
     }

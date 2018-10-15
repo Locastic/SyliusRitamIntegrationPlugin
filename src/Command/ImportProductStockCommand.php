@@ -54,13 +54,13 @@ class ImportProductStockCommand extends Command
 
             $ritamProductStock = $this->ritamConnectionHandler->getRitamProductStock();
 
-            $this->writeInfo(["Fetched all stock information from Ritam."]);
-
             if (is_string($ritamProductStock)) {
                 $this->writeError($ritamProductStock);
 
                 return 1;
             }
+
+            $this->writeInfo(["Fetched all stock information from Ritam."]);
 
             $this->writeInfo(["Saving info to database..."]);
 

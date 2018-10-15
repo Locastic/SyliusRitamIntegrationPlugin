@@ -55,13 +55,13 @@ class ImportProductsCommand extends Command
 
             $ritamProducts = $this->ritamConnectionHandler->getRitamProducts();
 
-            $this->writeInfo(["Fetched all products from Ritam."]);
-
             if (is_string($ritamProducts)) {
                 $this->writeError($ritamProducts);
 
                 return 1;
             }
+
+            $this->writeInfo(["Fetched all products from Ritam."]);
 
             $this->writeInfo(["Saving products to database..."]);
 
