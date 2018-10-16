@@ -3,7 +3,7 @@
 
 ## Setup
 
-Add the following line to your config.yml:
+Add the following line to your config.yml file:
 
     
     - { resource: "@LocasticSyliusRitamIntegrationPlugin/Resources/config/config.yml" }
@@ -14,7 +14,7 @@ Add the following lines to your routing.yml file:
         resource: "@LocasticSyliusRitamIntegrationPlugin/Resources/config/routing.yml"
         prefix: /admin
 
-Add parameters to parameters.yml or .env:
+Add parameters to parameters.yml or .env file:
     
     parameters:
         ritam_api_host: "%env(RITAM_API_HOST)%"
@@ -51,7 +51,6 @@ Add **state_machine.yml** file to app/config folder with this content:
                          args: ["object"]
 
 And add this line to your app/config.yml:
-
 
       - { resource: "state_machine.yml" }
       
