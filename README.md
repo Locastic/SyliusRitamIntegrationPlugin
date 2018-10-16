@@ -27,8 +27,8 @@ Add parameters to parameters.yml or .env:
     
         env(RITAM_API_HOST): 'http://webservice.ritam.hr:8920'
         env(RITAM_API_VERSION): '/rest/api/v1'
-        env(RITAM_API_SECRET): '23wqs28'
-        env(RITAM_API_USERNAME): 'km_webshop'
+        env(RITAM_API_SECRET): 'password'
+        env(RITAM_API_USERNAME): 'username'
         env(DEFAULT_IMPORT_LOCALE): 'en_US'
         env(DEFAULT_IMPORT_CHANNEL): 'US_WEB'
         env(DEFAULT_IMPORT_TAXON): 'category'
