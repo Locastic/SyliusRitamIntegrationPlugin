@@ -1,4 +1,5 @@
 <?php
+
 namespace Locastic\SyliusRitamIntegrationPlugin\Factory;
 
 use Sylius\Component\Core\Model\ChannelPricingInterface;

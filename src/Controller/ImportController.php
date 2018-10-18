@@ -14,26 +14,26 @@ class ImportController extends AbstractController
 {
     public function importRitamProductsAction(KernelInterface $kernel)
     {
-        $content = $this->callCommand($kernel,'locastic:sylius:import-ritam-products');
+        $content = $this->callCommand($kernel, 'locastic:sylius:import-ritam-products');
 
         return new Response($content);
     }
 
     public function importRitamProductPricesAction(KernelInterface $kernel)
     {
-        $content = $this->callCommand($kernel,'locastic:sylius:import-ritam-prices');
+        $content = $this->callCommand($kernel, 'locastic:sylius:import-ritam-prices');
 
         return new Response($content);
     }
 
     public function importRitamProductStockAction(KernelInterface $kernel)
     {
-        $content = $this->callCommand($kernel,'locastic:sylius:import-ritam-stock');
+        $content = $this->callCommand($kernel, 'locastic:sylius:import-ritam-stock');
 
         return new Response($content);
     }
 
-    private function callCommand(KernelInterface $kernel,string $command)
+    private function callCommand(KernelInterface $kernel, string $command)
     {
         $application = new Application($kernel);
         $application->setAutoExit(false);

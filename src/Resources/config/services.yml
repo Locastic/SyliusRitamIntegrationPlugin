@@ -21,7 +21,17 @@ services:
             - "@locatic_sylius_ritam_integration_plugin.factory.product"
             - "@sylius.repository.product"
             - "@sylius.factory.channel_pricing"
-            - "%default_import_channel%"
+            - "@locatic_sylius_ritam_integration_plugin.product_taxon_import_handler"
+
+    locatic_sylius_ritam_integration_plugin.product_taxon_import_handler:
+        public: true
+        class: Locastic\SyliusRitamIntegrationPlugin\Service\ProductTaxonImportHandler
+        arguments:
+            - "@sylius.repository.taxon"
+            - "@sylius.factory.taxon"
+            - "@sylius.factory.product_taxon"
+            - "%default_import_taxon%"
+            - '%default_import_locale%'
 
     locatic_sylius_ritam_integration_plugin.product_stock_import_handler:
         public: true
@@ -82,6 +92,14 @@ services:
         arguments:
             - '@locatic_sylius_ritam_integration_plugin.factory.channel_pricing.inner'
             - '%default_import_channel%'
+        public: false
+
+    locatic_sylius_ritam_integration_plugin.factory.taxon:
+        class: Locastic\SyliusRitamIntegrationPlugin\Factory\AddTaxonFromRitamFactory
+        decorates: sylius.factory.taxon
+        arguments:
+            - '@locatic_sylius_ritam_integration_plugin.factory.taxon.inner'
+            - '%default_import_locale%'
         public: false
 
     # Subscriber

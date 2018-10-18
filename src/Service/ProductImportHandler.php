@@ -24,15 +24,23 @@ class ProductImportHandler
      */
     private $channelPricingFactory;
 
+    /**
+     * @var ProductTaxonImportHandler
+     */
+    private $productTaxonImportHandler;
+
     public function __construct(
         ProductFromRitamFactoryInterface $productFactory,
         ProductRepositoryInterface $productRepository,
-        ChannelPricingFromRitamFactoryInterface $channelPricingFactory
+        ChannelPricingFromRitamFactoryInterface $channelPricingFactory,
+        ProductTaxonImportHandler $productTaxonImportHandler
     ) {
         $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
         $this->channelPricingFactory = $channelPricingFactory;
+        $this->productTaxonImportHandler = $productTaxonImportHandler;
     }
+
 
     public function importProducts($ritamProducts)
     {
@@ -55,6 +63,9 @@ class ProductImportHandler
             $channelPricing = $this->channelPricingFactory->createFromRitam($ritamProduct);
 
             $product = $this->productFactory->createWithChannelPricing($ritamProduct, $channelPricing);
+
+            $product = $this->productTaxonImportHandler->importTaxons($ritamProduct,$product);
+
             $this->productRepository->persist($product);
 
             // bulk insert - flush after every $batchSize persists

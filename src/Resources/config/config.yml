@@ -4,3 +4,10 @@ sylius_product:
             classes:
                 model: Locastic\SyliusRitamIntegrationPlugin\Entity\Product
                 repository: Locastic\SyliusRitamIntegrationPlugin\Repository\ProductRepository
+
+
+sylius_taxonomy:
+    resources:
+        taxon:
+            classes:
+                repository: Locastic\SyliusRitamIntegrationPlugin\Repository\TaxonRepository

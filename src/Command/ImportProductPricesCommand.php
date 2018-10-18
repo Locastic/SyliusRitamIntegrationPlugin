@@ -1,4 +1,5 @@
 <?php
+
 namespace Locastic\SyliusRitamIntegrationPlugin\Command;
 
 use Locastic\SyliusRitamIntegrationPlugin\Service\ProductPricesImportHandler;
@@ -24,8 +25,10 @@ class ImportProductPricesCommand extends Command
      */
     private $output;
 
-    public function __construct(RitamApiHandler $ritamConnectionHandler, ProductPricesImportHandler $productPricesImportHandler)
-    {
+    public function __construct(
+        RitamApiHandler $ritamConnectionHandler,
+        ProductPricesImportHandler $productPricesImportHandler
+    ) {
         $this->ritamConnectionHandler = $ritamConnectionHandler;
         $this->productPricesImportHandler = $productPricesImportHandler;
 
@@ -52,7 +55,6 @@ class ImportProductPricesCommand extends Command
             $this->writeInfo(["Please wait while data is being imported..."]);
 
             $ritamProductPrices = $this->ritamConnectionHandler->getRitamProductPrices();
-
 
             if (is_string($ritamProductPrices)) {
                 $this->writeError($ritamProductPrices);

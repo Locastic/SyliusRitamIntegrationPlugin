@@ -1,4 +1,5 @@
 <?php
+
 namespace Locastic\SyliusRitamIntegrationPlugin\Factory;
 
 use Locastic\SyliusRitamIntegrationPlugin\Util\PriceFormatter;
@@ -7,7 +8,9 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 
 class AddChannelPricingFromRitamFactory implements ChannelPricingFromRitamFactoryInterface
 {
-    /** @var FactoryInterface */
+    /**
+     * @var FactoryInterface
+     */
     private $createChannelPricingFromRitamFactory;
 
     /**
@@ -31,12 +34,13 @@ class AddChannelPricingFromRitamFactory implements ChannelPricingFromRitamFactor
         $channelPricing = $this->createChannelPricingFromRitamFactory->createNew();
 
         $price = $originalPrice = 0;
+
         /**
          * @var ChannelPricingInterface $channelPricing
          */
         if (isset($ritamProduct->item_mpc) && isset($ritamProduct->item_vpc)) {
-            $price = $ritamProduct->item_vpc;
-            $originalPrice = $ritamProduct->item_mpc;
+            $price = $ritamProduct->item_mpc;
+            $originalPrice = $ritamProduct->item_vpc;
         }
 
         $channelPricing->setOriginalPrice(PriceFormatter::formatPrice($originalPrice));

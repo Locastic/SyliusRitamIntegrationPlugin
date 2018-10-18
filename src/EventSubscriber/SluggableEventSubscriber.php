@@ -7,9 +7,14 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Sylius\Component\Core\Model\ProductTranslation;
 use Sylius\Component\Product\Generator\SlugGenerator;
+use Sylius\Component\Taxonomy\Model\TaxonTranslation;
 
 class SluggableEventSubscriber implements EventSubscriber
 {
+    private static $sluggableEntities = [
+        ProductTranslation::class,
+        TaxonTranslation::class
+    ];
     /**
      * @var SlugGenerator
      */
@@ -32,7 +37,7 @@ class SluggableEventSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
 
-        if (!$entity instanceof ProductTranslation) {
+        if (!in_array(get_class($entity), self::$sluggableEntities)) {
             return;
         }
 
