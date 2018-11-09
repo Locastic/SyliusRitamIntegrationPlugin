@@ -9,8 +9,8 @@ parameters:
 
     env(RITAM_API_HOST): 'http://webservice.ritam.hr:8920'
     env(RITAM_API_VERSION): '/rest/api/v1'
-    env(RITAM_API_SECRET): '23wqs28'
-    env(RITAM_API_USERNAME): 'km_webshop'
+    env(RITAM_API_SECRET): '01tmx22'
+    env(RITAM_API_USERNAME): 'tmax01_ws'
     env(DEFAULT_IMPORT_LOCALE): 'en_US'
     env(DEFAULT_IMPORT_CHANNEL): 'US_WEB'
     env(DEFAULT_IMPORT_TAXON): 'category'
