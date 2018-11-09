@@ -41,7 +41,7 @@ class SluggableEventSubscriber implements EventSubscriber
             return;
         }
 
-        $name = $entity->getName().$entity->getTranslatable()->getCode();
+        $name = $entity->getName().$entity->getTranslatable()->getCode().mt_rand(1,10);
         $slug = $this->slugGenerator->generate($name);
         $entity->setSlug($slug);
     }

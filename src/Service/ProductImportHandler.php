@@ -6,6 +6,9 @@ namespace Locastic\SyliusRitamIntegrationPlugin\Service;
 use Locastic\SyliusRitamIntegrationPlugin\Factory\ChannelPricingFromRitamFactoryInterface;
 use Locastic\SyliusRitamIntegrationPlugin\Factory\ProductFromRitamFactoryInterface;
 use Locastic\SyliusRitamIntegrationPlugin\Repository\ProductRepositoryInterface;
+use Locastic\SyliusRitamIntegrationPlugin\Repository\TaxonRepositoryInterface;
+use Sylius\Component\Core\Model\Taxon;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 
 class ProductImportHandler
 {
@@ -29,16 +32,47 @@ class ProductImportHandler
      */
     private $productTaxonImportHandler;
 
+    /**
+     * @var TaxonRepositoryInterface
+     */
+    private $taxonRepository;
+
+    /**
+     * @var FactoryInterface
+     */
+    private $productTaxonFactory;
+
+    /**
+     * @var string
+     */
+    private $taxonCode;
+
+    /**
+     * ProductImportHandler constructor.
+     * @param ProductFromRitamFactoryInterface $productFactory
+     * @param ProductRepositoryInterface $productRepository
+     * @param ChannelPricingFromRitamFactoryInterface $channelPricingFactory
+     * @param ProductTaxonImportHandler $productTaxonImportHandler
+     * @param TaxonRepositoryInterface $taxonRepository
+     * @param FactoryInterface $productTaxonFactory
+     * @param string $taxonCode
+     */
     public function __construct(
         ProductFromRitamFactoryInterface $productFactory,
         ProductRepositoryInterface $productRepository,
         ChannelPricingFromRitamFactoryInterface $channelPricingFactory,
-        ProductTaxonImportHandler $productTaxonImportHandler
+        ProductTaxonImportHandler $productTaxonImportHandler,
+        TaxonRepositoryInterface $taxonRepository,
+        FactoryInterface $productTaxonFactory,
+        $taxonCode
     ) {
         $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
         $this->channelPricingFactory = $channelPricingFactory;
         $this->productTaxonImportHandler = $productTaxonImportHandler;
+        $this->taxonRepository = $taxonRepository;
+        $this->productTaxonFactory = $productTaxonFactory;
+        $this->taxonCode = $taxonCode;
     }
 
 
@@ -64,7 +98,23 @@ class ProductImportHandler
 
             $product = $this->productFactory->createWithChannelPricing($ritamProduct, $channelPricing);
 
-            $product = $this->productTaxonImportHandler->importTaxons($ritamProduct,$product);
+            $product = $this->productTaxonImportHandler->importTaxons($ritamProduct, $product);
+
+
+            if ($product->getProductTaxons()->count() == 0) {
+
+                $taxon = $this->taxonRepository->findOneByCode($this->taxonCode);
+
+                if ($taxon instanceof Taxon) {
+
+                    $productTaxon = $this->productTaxonFactory->createNew();
+                    $productTaxon->setTaxon($taxon);
+                    $productTaxon->setProduct($product);
+
+                    $product->addProductTaxon($productTaxon);
+                    $product->setMainTaxon($taxon);
+                }
+            }
 
             $this->productRepository->persist($product);
 

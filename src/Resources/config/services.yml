@@ -22,6 +22,9 @@ services:
             - "@sylius.repository.product"
             - "@sylius.factory.channel_pricing"
             - "@locatic_sylius_ritam_integration_plugin.product_taxon_import_handler"
+            - "@sylius.repository.taxon"
+            - "@sylius.factory.product_taxon"
+            - "%default_import_taxon%"
 
     locatic_sylius_ritam_integration_plugin.product_taxon_import_handler:
         public: true
@@ -109,14 +112,6 @@ services:
         tags: [{ name: doctrine.event_subscriber, connection: default }]
 
     # Listener
-    locatic_sylius_ritam_integration_plugin.listener.taxon:
-        class: Locastic\SyliusRitamIntegrationPlugin\EventListener\TaxonEventListener
-        arguments:
-            - "@sylius.repository.taxon"
-            - "@sylius.factory.product_taxon"
-            - "%default_import_taxon%"
-        tags: [{ name: doctrine.event_listener, event: prePersist, connection: default }]
-
     locatic_sylius_ritam_integration_plugin.listener.channel:
         class: Locastic\SyliusRitamIntegrationPlugin\EventListener\ChannelEventListener
         arguments:
