@@ -53,7 +53,7 @@ class ProductTaxonImportHandler
 
     public function importTaxons($ritamProduct, ProductInterface $product): ProductInterface
     {
-        $group = str_replace(' ', '-',ucfirst(strtolower($ritamProduct->item_group)));
+        $group = str_replace(' ', '-',ucfirst(mb_strtolower($ritamProduct->item_group, 'UTF-8')));
         $parentTaxon = $this->taxonRepository->findOneByCode($group);
 
         if (is_null($parentTaxon)) {
@@ -72,7 +72,7 @@ class ProductTaxonImportHandler
         $product = $this->importProductTaxons($parentTaxon, $product);
         $product->setMainTaxon($parentTaxon);
 
-        $subgroup = str_replace(' ', '-',ucfirst(strtolower($ritamProduct->item_subgroup)));
+        $subgroup = str_replace(' ', '-',ucfirst(mb_strtolower($ritamProduct->item_subgroup, 'UTF-8')));
         $childTaxon = $this->taxonRepository->findOneByCode($subgroup);
 
         if (is_null($childTaxon)) {

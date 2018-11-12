@@ -39,8 +39,8 @@ class AddChannelPricingFromRitamFactory implements ChannelPricingFromRitamFactor
          * @var ChannelPricingInterface $channelPricing
          */
         if (isset($ritamProduct->item_mpc) && isset($ritamProduct->item_vpc)) {
-            $price = $ritamProduct->item_mpc;
-            $originalPrice = $ritamProduct->item_vpc;
+            $originalPrice = $ritamProduct->item_mpc;
+            $price = $ritamProduct->item_vpc;
         }
 
         $channelPricing->setOriginalPrice(PriceFormatter::formatPrice($originalPrice));

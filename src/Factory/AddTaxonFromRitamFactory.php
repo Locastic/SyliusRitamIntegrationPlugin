@@ -40,7 +40,7 @@ class AddTaxonFromRitamFactory implements TaxonFromRitamFactoryInterface
 
         $taxon = $this->createTaxonFromRitamFactory->createNew();
 
-        return $this->createTaxon($taxon,  ucfirst(strtolower($ritamProduct->item_group)));
+        return $this->createTaxon($taxon,  ucfirst(mb_strtolower($ritamProduct->item_group, 'UTF-8')));
     }
 
     public function createChildTaxonFromRitam($ritamProduct): ?TaxonInterface
@@ -51,7 +51,7 @@ class AddTaxonFromRitamFactory implements TaxonFromRitamFactoryInterface
 
         $taxon = $this->createTaxonFromRitamFactory->createNew();
 
-        return $this->createTaxon($taxon,  ucfirst(strtolower($ritamProduct->item_subgroup)));
+        return $this->createTaxon($taxon,  ucfirst(mb_strtolower($ritamProduct->item_subgroup, 'UTF-8')));
 
     }
 
