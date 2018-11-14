@@ -5,11 +5,9 @@ namespace Locastic\SyliusRitamIntegrationPlugin\Factory;
 
 use Locastic\SyliusRitamIntegrationPlugin\Entity\ProductInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\Component\Product\Factory\ProductFactoryInterface;
 
-interface ProductFromRitamFactoryInterface extends FactoryInterface
+interface ProductFromRitamFactoryInterface extends ProductFactoryInterface
 {
     public function createWithChannelPricing($ritamProduct, ChannelPricingInterface $channelPricing): ProductInterface;
-
-    public function createWithVariant(): ProductInterface;
 }

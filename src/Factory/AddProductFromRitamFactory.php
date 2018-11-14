@@ -30,7 +30,7 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
     }
 
 
-    public function createWithVariant(): ProductInterface
+    public function createWithVariant(): \Sylius\Component\Product\Model\ProductInterface
     {
         return $this->createProductFromRitamFactory->createWithVariant();
     }
@@ -43,7 +43,7 @@ class AddProductFromRitamFactory implements ProductFromRitamFactoryInterface
         $product = $this->createProductFromRitamFactory->createWithVariant();
 
         $product->setCurrentLocale($this->locale);
-        $product->setRitamId(intval($ritamProduct->item_id));
+        $product->setRitamId((int)($ritamProduct->item_id));
         $product->setUnitOfMeasure($ritamProduct->item_unit);
         $product->setName($ritamProduct->item_name);
         $product->setCode($ritamProduct->item_code);

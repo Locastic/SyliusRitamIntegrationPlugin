@@ -40,7 +40,7 @@ class AddTaxonFromRitamFactory implements TaxonFromRitamFactoryInterface
 
         $taxon = $this->createTaxonFromRitamFactory->createNew();
 
-        return $this->createTaxon($taxon,  ucfirst(mb_strtolower($ritamProduct->item_group, 'UTF-8')));
+        return $this->createTaxon($taxon, ucfirst(mb_strtolower($ritamProduct->item_group, 'UTF-8')));
     }
 
     public function createChildTaxonFromRitam($ritamProduct): ?TaxonInterface
@@ -51,7 +51,7 @@ class AddTaxonFromRitamFactory implements TaxonFromRitamFactoryInterface
 
         $taxon = $this->createTaxonFromRitamFactory->createNew();
 
-        return $this->createTaxon($taxon,  ucfirst(mb_strtolower($ritamProduct->item_subgroup, 'UTF-8')));
+        return $this->createTaxon($taxon, ucfirst(mb_strtolower($ritamProduct->item_subgroup, 'UTF-8')));
 
     }
 
@@ -61,6 +61,19 @@ class AddTaxonFromRitamFactory implements TaxonFromRitamFactoryInterface
         $taxon->setName($taxonName);
         $taxon->setCode(str_replace(' ', '-', $taxonName));
         $taxon->setDescription($taxonName);
+
+        return $taxon;
+    }
+
+    /**
+     * @param \Sylius\Component\Taxonomy\Model\TaxonInterface $parent
+     *
+     * @return \Sylius\Component\Taxonomy\Model\TaxonInterface
+     */
+    public function createForParent(\Sylius\Component\Taxonomy\Model\TaxonInterface $parent
+    ): \Sylius\Component\Taxonomy\Model\TaxonInterface {
+        $taxon = $this->createNew();
+        $taxon->setParent($parent);
 
         return $taxon;
     }
