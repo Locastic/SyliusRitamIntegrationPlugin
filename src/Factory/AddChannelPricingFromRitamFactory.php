@@ -33,17 +33,15 @@ class AddChannelPricingFromRitamFactory implements ChannelPricingFromRitamFactor
     {
         $channelPricing = $this->createChannelPricingFromRitamFactory->createNew();
 
-        $price = $originalPrice = 0;
+        $price = 0;
 
         /**
          * @var ChannelPricingInterface $channelPricing
          */
-        if (isset($ritamProduct->item_mpc) && isset($ritamProduct->item_vpc)) {
-            $originalPrice = $ritamProduct->item_mpc;
-            $price = $ritamProduct->item_vpc;
+        if (isset($ritamProduct->item_mpc)) {
+            $price = $ritamProduct->item_mpc;
         }
 
-        $channelPricing->setOriginalPrice(PriceFormatter::formatPrice($originalPrice));
         $channelPricing->setPrice(PriceFormatter::formatPrice($price));
         $channelPricing->setChannelCode($this->channelCode);
 
