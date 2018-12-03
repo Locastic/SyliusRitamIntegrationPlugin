@@ -11,6 +11,6 @@ interface TaxonFromRitamFactoryInterface extends TaxonFactoryInterface
 {
     public function createParentTaxonFromRitam($ritamProduct): ?TaxonInterface;
 
-    public function createChildTaxonFromRitam($ritamProduct): ?TaxonInterface;
+    public function createChildTaxonFromRitam($ritamProduct, $taxonCode): ?TaxonInterface;
 
 }

@@ -73,10 +73,12 @@ class ProductTaxonImportHandler
         $product->setMainTaxon($parentTaxon);
 
         $subgroup = str_replace(' ', '-',ucfirst(mb_strtolower($ritamProduct->item_subgroup, 'UTF-8')));
+
+        $subgroup = $group."-".$subgroup;
         $childTaxon = $this->taxonRepository->findOneByCode($subgroup);
 
         if (is_null($childTaxon)) {
-            $childTaxon = $this->taxonFactory->createChildTaxonFromRitam($ritamProduct);
+            $childTaxon = $this->taxonFactory->createChildTaxonFromRitam($ritamProduct, $subgroup);
 
             if (is_null($childTaxon)) {
                 return $product;

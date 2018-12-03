@@ -43,7 +43,7 @@ class AddTaxonFromRitamFactory implements TaxonFromRitamFactoryInterface
         return $this->createTaxon($taxon, ucfirst(mb_strtolower($ritamProduct->item_group, 'UTF-8')));
     }
 
-    public function createChildTaxonFromRitam($ritamProduct): ?TaxonInterface
+    public function createChildTaxonFromRitam($ritamProduct, $taxonCode): ?TaxonInterface
     {
         if (!isset($ritamProduct->item_subgroup) || $ritamProduct->item_subgroup == "") {
             return null;
@@ -51,15 +51,19 @@ class AddTaxonFromRitamFactory implements TaxonFromRitamFactoryInterface
 
         $taxon = $this->createTaxonFromRitamFactory->createNew();
 
-        return $this->createTaxon($taxon, ucfirst(mb_strtolower($ritamProduct->item_subgroup, 'UTF-8')));
+        return $this->createTaxon($taxon, ucfirst(mb_strtolower($ritamProduct->item_subgroup, 'UTF-8')),$taxonCode);
 
     }
 
-    private function createTaxon(TaxonInterface $taxon, string $taxonName): TaxonInterface
+    private function createTaxon(TaxonInterface $taxon, string $taxonName, $taxonCode = null): TaxonInterface
     {
         $taxon->setCurrentLocale($this->locale);
         $taxon->setName($taxonName);
-        $taxon->setCode(str_replace(' ', '-', $taxonName));
+        if ($taxonCode === null) {
+            $taxon->setCode(str_replace(' ', '-', $taxonName));
+        }else{
+            $taxon->setCode($taxonCode);
+        }
         $taxon->setDescription($taxonName);
 
         return $taxon;

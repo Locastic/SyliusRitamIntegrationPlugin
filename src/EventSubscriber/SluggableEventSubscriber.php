@@ -47,6 +47,10 @@ class SluggableEventSubscriber implements EventSubscriber
             $name = $name.mt_rand(1,10);
         }
 
+        if($entity instanceof TaxonTranslation){
+            $name = $entity->getTranslatable()->getCode();
+        }
+
         $slug = $this->slugGenerator->generate($name);
         $entity->setSlug($slug);
     }
